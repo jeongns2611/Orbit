@@ -1,0 +1,77 @@
+services:
+  npm:
+    image: 'jc21/nginx-proxy-manager:latest'
+    container_name: npm
+    restart: unless-stopped
+    ports:
+      - '80:80'      # HTTP (인증서 발급용)
+      - '8181:81'    # 관리자 페이지
+      - '443:443'    # HTTPS
+    volumes:
+      - ./npm/data:/data
+      - ./npm/letsencrypt:/etc/letsencrypt
+    networks:
+      - edge_net
+
+  mosquitto:
+    image: eclipse-mosquitto
+    container_name: mosquitto
+    restart: unless-stopped
+    ports:
+      - "8000:1883"
+    volumes:
+      - /home/ubuntu/mqtt-broker/config/mosquitto.conf:/mosquitto/config/mosquitto.conf
+      - /home/ubuntu/mqtt-broker/config/password.txt:/mosquitto/config/password.txt
+      - /home/ubuntu/mqtt-broker/data:/mosquitto/data
+      - /home/ubuntu/mqtt-broker/log:/mosquitto/log
+    networks:
+      - edge_net
+
+  db:
+    image: postgres:16.11
+    container_name: postgres
+    restart: unless-stopped
+    env_file: ${APP_ENV_FILE:-.env}
+    environment:
+      TZ: ${TZ:-Asia/Seoul}
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+      - ./BE/database/init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    networks:
+      - internal_net
+
+  api:
+    build:
+      context: ./BE
+      dockerfile: Dockerfile
+    container_name: be-api
+    restart: unless-stopped
+    env_file: ${APP_ENV_FILE:-.env}
+    environment:
+      # DATABASE_URL: ${DATABASE_URL}
+      MQTT_HOST: mosquitto
+      MQTT_PORT: 1883
+      TZ: ${TZ:-Asia/Seoul}
+      PYTHONUNBUFFERED: 1
+    depends_on:
+      db:
+        condition: service_healthy
+      mosquitto:
+        condition: service_started
+    networks:
+      - internal_net
+      - edge_net
+
+volumes:
+  pg_data:
+
+networks:
+  internal_net:
+    driver: bridge
+  edge_net:
+    driver: bridge

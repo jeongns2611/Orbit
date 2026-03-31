@@ -1,0 +1,15 @@
+export const ASYNC_STORAGE_KEYS = {
+    DEVICE_REGISTERED: 'device_registered',
+    CHILD_PROFILE_REGISTERED: 'child_profile_registered',
+    DEVICE_INFO: 'device_info',
+    CHILD_PROFILE_DATA: 'child_profile_data',
+    ACCESS_TOKEN: 'access_token',
+    REFRESH_TOKEN: 'refresh_token',
+    TOKEN_TYPE: 'token_type',
+    EXPIRES_IN: 'expires_in',
+    TOKEN_ISSUED_AT: 'token_issued_at',
+    NICKNAME: 'nickname',
+    PASSWORD_LENGTH: 'password_length',
+    THEME : 'theme',
+    TIMELINE_BY_DATE: 'timeline_by_date',
+} as const;

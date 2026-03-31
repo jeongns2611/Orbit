@@ -1,0 +1,27 @@
+# Python 캐시 파일
+**/__pycache__/
+*.py[cod]
+*$py.class
+
+
+# 가상 환경
+venv/
+.venv/
+env/
+
+# 환경 변수 및 시크릿 (보안 중요!)
+.env
+*.local
+
+# 로그 및 데이터
+logs/
+*.log
+dist/
+data/
+build/
+
+# 모델 가중치 파일 (필요 시 제외)
+*.pt
+*.engine
+*.onnx
+

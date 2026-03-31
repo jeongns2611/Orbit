@@ -1,0 +1,14 @@
+node_modules
+.expo
+dist
+web-build
+*.log
+*.lock
+package-lock.json
+yarn.lock
+.expo-shared
+.expo
+coverage
+.nyc_output
+build
+*.tsbuildinfo

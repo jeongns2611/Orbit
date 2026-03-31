@@ -1,0 +1,12 @@
+scan_filter_node:
+  ros__parameters:
+    # 카메라 화각(FOV) -> 전방 +- 45도 범위
+    min_angle: -45.0
+    max_angle: 45.0   
+    min_dist: 0.1     # 로봇 몸체 노이즈 제거
+    max_dist: 1.0     # 원거리 데이터 한계치 설정
+
+lidar_cluster_node:  # 노드 이름에 맞춰서 섹션 추가
+  ros__parameters:
+    cluster_dist_threshold: 0.25  # 해당 거리 이내면 같은 덩어리
+    min_cluster_size: 3           # 최소 점 개수 (노이즈 방지)

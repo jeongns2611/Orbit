@@ -1,0 +1,10 @@
+# config/vision_config.yaml
+tracking_node:
+  ros__parameters:
+    model_path: "models/yolov8n.engine" 
+    tracker_config: "botsort.yaml"      # BoT-SORT 설정
+    camera_index: 0
+    conf_threshold: 0.5
+    img_size: 640
+    device: "0"                         # 젯슨 GPU
+    half_precision: true                # FP16 가속

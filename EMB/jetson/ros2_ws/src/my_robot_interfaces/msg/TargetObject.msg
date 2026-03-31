@@ -1,0 +1,3 @@
+float64 distance
+float64 angle_deg
+float64 detected
